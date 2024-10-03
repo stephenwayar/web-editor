@@ -1,5 +1,6 @@
 import React from "react";
 import Head from "next/head";
+import Editor from "@/components/editor/Editor";
 
 export default function Home() {
   return (
@@ -11,10 +12,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
+      <main className="px-4 sm:px-8 pb-20 pt-10">
+        <Editor />
       </main>
     </React.Fragment>
   );

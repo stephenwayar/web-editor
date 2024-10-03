@@ -9,6 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@iconify/react": "^5.0.2",
+    "@mantine/core": "^7.13.1",
+    "@mantine/dropzone": "^7.13.2",
+    "@mantine/hooks": "^7.13.1",
+    "@mantine/tiptap": "^7.13.1",
+    "@tabler/icons-react": "^3.19.0",
+    "@tiptap/extension-highlight": "^2.8.0",
+    "@tiptap/extension-link": "^2.8.0",
+    "@tiptap/extension-subscript": "^2.8.0",
+    "@tiptap/extension-superscript": "^2.8.0",
+    "@tiptap/extension-text-align": "^2.8.0",
+    "@tiptap/extension-text-style": "^2.8.0",
+    "@tiptap/extension-underline": "^2.8.0",
+    "@tiptap/pm": "^2.8.0",
+    "@tiptap/react": "^2.8.0",
+    "@tiptap/starter-kit": "^2.8.0",
     "next": "14.2.14",
     "react": "^18",
     "react-dom": "^18"
@@ -21,6 +37,8 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.14",
     "postcss": "^8.4.47",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
     "tailwindcss": "^3.4.13",
     "typescript": "^5"
   }
