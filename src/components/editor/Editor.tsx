@@ -13,6 +13,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import { notifications } from '@mantine/notifications';
 import EditorInsertButton from './EditorInsertButton';
 import { RichTextEditor, Link } from '@mantine/tiptap';
+import Placeholder from '@tiptap/extension-placeholder';
 import { FloatingMenu, useEditor } from '@tiptap/react';
 import Superscript from '@tiptap/extension-superscript';
 import { getWordCount } from '@/helpers/functions/getWordCount';
@@ -21,7 +22,7 @@ import { convertImageToBase64 } from '@/helpers/functions/convertImageToBase64';
 
 export default function Editor() {
   const maxWords = 1000
-  const [wordCount, setWordCount] = useState(2)
+  const [wordCount, setWordCount] = useState(0)
   const [focus, setFocus] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('Add post title')
@@ -48,8 +49,12 @@ export default function Editor() {
   }, []);
 
   const editor = useEditor({
-    content: "<p>Add content</p>", // Initial content for the editor
+    content: "", // Initial content for the editor
     immediatelyRender: false, // Prevent rendering immediately
+
+    onFocus() {
+      setFocus(true);
+    },
 
     onCreate({ editor }) {
       const text = editor.getText() // Get initial text content
@@ -79,6 +84,7 @@ export default function Editor() {
       YoutubeNode, // Custom extension to embed YouTube videos
       Superscript, // Extension for superscript text
       PictureNode, // Custom extension for embedding pictures
+      Placeholder.configure({ placeholder: 'Add content' }), // Extension for placeholder
       TextAlign.configure({ types: ['heading', 'paragraph'] }), // Extension for text alignment in headings and paragraphs
     ],
   });
@@ -155,6 +161,7 @@ export default function Editor() {
 
     notifications.show({
       autoClose: 5000,
+      color: '#23803D',
       title: 'Post Successful!',
       message: 'The editor values have been logged. Take a look in the console!',
     });
@@ -162,7 +169,7 @@ export default function Editor() {
 
   return (
     <div className='w-full max-w-[50rem] mx-auto'>
-      <div className="border-[1px] min-h-[40rem] bg-white rounded-md border-[#ced4da] flex flex-col">
+      <div className="border-[1px] min-h-[40rem] rounded-md border-[#ced4da] flex flex-col">
         <div className="mt-12 border-b-[1px] border-[#ced4da]" />
 
         <div className='mx-4 my-2'>
@@ -203,10 +210,18 @@ export default function Editor() {
           )}
 
           <RichTextEditor.Content
-            onFocus={() => setFocus(true)}
+            className="editor-content"
           />
 
-          <div className='w-full py-2 border-t-[1px] px-4 text-right text-[#343e37] text-sm border-[#ced4da] mt-auto'>
+          <style jsx global>
+            {`
+              .editor-content div[contenteditable="true"] {
+                background-color: #FAFAFA !important;
+              }
+            `}
+          </style>
+
+          <div className='w-full py-2 border-t-[1px] px-4 bg-white text-right text-[#343e37] text-sm border-[#ced4da] mt-auto'>
             {wordCount}/{maxWords} words
           </div>
         </RichTextEditor>

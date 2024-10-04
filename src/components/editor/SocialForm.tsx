@@ -1,4 +1,5 @@
 import React from "react";
+import { Switch } from "@mantine/core";
 
 interface Props {
   socialLinkProps: {
@@ -49,11 +50,25 @@ const SocialForm: React.FC<Props> = ({ socialLinkProps, setSocialLinkProps }) =>
           CODE
         </label>
 
-        <textarea
+        <input
+          type='text'
           value={socialLinkProps.code}
           placeholder='<a className="normal">Facebook</a>'
+          className="border px-2 py-3 rounded-md border-[#23803D] outline-[#23803D]" 
           onChange={({ target }) => setSocialLinkProps({ ...socialLinkProps, code: target.value })}
-          className="border px-2 py-3 min-h-16 max-h-28 rounded-md border-[#23803D] outline-[#23803D]" />
+        />
+      </div>
+
+      <div className="flex justify-between items-center">
+        <div>
+          <label className="text-sm text-[#333333]">
+            Disable caption
+          </label>
+        </div>
+
+        <div>
+          <Switch defaultChecked color="#23803D" size="xs" />
+        </div>
       </div>
     </div>
   )

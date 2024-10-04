@@ -81,7 +81,7 @@ const EditorInsertButton: React.FC<Props> = ({
         openSocial()
         setPopoverOpened(false)
       },
-      icon: 'ph:play-fill',
+      icon: '',
       subtitle: 'Instagram, Twitter, Tiktok, Snapchat, Facebook',
     }
   ]
@@ -118,6 +118,7 @@ const EditorInsertButton: React.FC<Props> = ({
             {embeds.map((embed, index: number) => (
               <Embed
                 key={index}
+                index={index}
                 icon={embed.icon}
                 title={embed.title}
                 action={embed.action}
