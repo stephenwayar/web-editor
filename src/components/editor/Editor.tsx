@@ -10,6 +10,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
 import SubScript from '@tiptap/extension-subscript';
 import TextAlign from '@tiptap/extension-text-align';
+import { notifications } from '@mantine/notifications';
 import EditorInsertButton from './EditorInsertButton';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { FloatingMenu, useEditor } from '@tiptap/react';
@@ -142,6 +143,23 @@ export default function Editor() {
     }
   };
 
+  const handlePost = () => {
+    // Access the editor's content
+    const text = editor?.getText(); // Retrieves the plain text content
+    const html = editor?.getHTML(); // Retrieves the content in HTML format
+    const content = editor?.getJSON(); // Retrieves the content in JSON format
+
+    console.log("Plain Text:", text);
+    console.log("HTML Content:", html);
+    console.log("JSON Content:", content);
+
+    notifications.show({
+      autoClose: 5000,
+      title: 'Post Successful!',
+      message: 'The editor values have been logged. Take a look in the console!',
+    });
+  };
+
   return (
     <div className='w-full max-w-[50rem] mx-auto'>
       <div className="border-[1px] min-h-[40rem] bg-white rounded-md border-[#ced4da] flex flex-col">
@@ -195,7 +213,7 @@ export default function Editor() {
       </div>
 
       <div className='flex justify-end mt-5'>
-        <button className='text-white px-4 py-2 font-semibold rounded-md bg-[#23803D]'>
+        <button onClick={handlePost} className='text-white px-4 py-2 font-semibold rounded-md bg-[#23803D]'>
           Post
         </button>
       </div>
