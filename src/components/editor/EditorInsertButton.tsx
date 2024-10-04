@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import Embed from "./Embed";
 import VideoForm from "./VideoForm";
 import { Icon } from '@iconify/react';
+import SocialForm from "./SocialForm";
 import { Popover } from "@mantine/core";
-import EmbedModal, { EmbedType } from "./EmbedModal";
 import PictureDropzone from "./PictureDropzone";
+import EmbedModal, { EmbedType } from "./EmbedModal";
 
 interface Props {
   videoOpened: boolean;
@@ -24,6 +25,16 @@ interface Props {
     provider: string;
     url: string;
   }>>;
+  socialLinkProps: {
+    platform: string;
+    code: string;
+    url: string;
+  };
+  setSocialLinkProps: React.Dispatch<React.SetStateAction<{
+    platform: string;
+    code: string;
+    url: string;
+  }>>
   handleEmbed: (type: EmbedType) => void
 }
 
@@ -40,6 +51,8 @@ const EditorInsertButton: React.FC<Props> = ({
   socialOpened,
   pictureOpened,
   setVideoProps,
+  socialLinkProps,
+  setSocialLinkProps
 }) => {
   const [popoverOpened, setPopoverOpened] = useState(false);
 
@@ -144,7 +157,10 @@ const EditorInsertButton: React.FC<Props> = ({
         opened={socialOpened}
         handleEmbed={handleEmbed}
       >
-        social
+        <SocialForm
+          socialLinkProps={socialLinkProps}
+          setSocialLinkProps={setSocialLinkProps}
+        />
       </EmbedModal>
     </React.Fragment>
   )

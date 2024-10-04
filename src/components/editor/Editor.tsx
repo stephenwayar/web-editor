@@ -6,14 +6,14 @@ import StarterKit from '@tiptap/starter-kit';
 import type { EmbedType } from './EmbedModal';
 import { useDisclosure } from '@mantine/hooks';
 import { FileWithPath } from '@mantine/dropzone';
-import SubScript from '@tiptap/extension-subscript';
 import Highlight from '@tiptap/extension-highlight';
-import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
+import SubScript from '@tiptap/extension-subscript';
+import TextAlign from '@tiptap/extension-text-align';
 import EditorInsertButton from './EditorInsertButton';
-import Superscript from '@tiptap/extension-superscript';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { FloatingMenu, useEditor } from '@tiptap/react';
+import Superscript from '@tiptap/extension-superscript';
 import { getWordCount } from '@/helpers/functions/getWordCount';
 import { convertToEmbedUrl } from '@/helpers/functions/convertToEmbedUrl';
 import { convertImageToBase64 } from '@/helpers/functions/convertImageToBase64';
@@ -24,12 +24,16 @@ export default function Editor() {
   const [focus, setFocus] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('Add post title')
-  const [imageFile, setImageFile] = useState<FileWithPath | null>(null)
   const [videoOpened, { open: openVideo, close: closeVideo }] = useDisclosure(false);
   const [socialOpened, { open: openSocial, close: closeSocial }] = useDisclosure(false);
   const [pictureOpened, { open: openPicture, close: closePicture }] = useDisclosure(false);
   const [videoProps, setVideoProps] = useState({
     provider: 'Youtube',
+    url: ''
+  })
+  const [socialLinkProps, setSocialLinkProps] = useState({
+    platform: 'Facebook',
+    code: '', // No use case 
     url: ''
   })
 
@@ -93,27 +97,43 @@ export default function Editor() {
             });
           });
 
-          setImageFile(imageFile) // Update the state with the selected image file
           closePicture() // Close the image modal or UI component
         }
         break;
 
       case 'video':
         // Insert a YouTube video node into the editor
-        editor?.commands.insertContent({
-          type: 'youtube', // Inserting a YouTube node
-          attrs: {
-            anonymous: true, // Some property related to video
-            src: convertToEmbedUrl(videoProps.url), // Convert the URL to an embeddable YouTube link
-          },
-        });
+        if (videoProps.url) {
+          editor?.commands.insertContent({
+            type: 'youtube', // Inserting a YouTube node
+            attrs: {
+              anonymous: true, // Some property related to video
+              src: convertToEmbedUrl(videoProps.url), // Convert the URL to an embeddable YouTube link
+            },
+          });
 
-        setVideoProps({ ...videoProps, url: '' }) // Reset the video URL state
-        closeVideo() // Close the video modal or UI component
+          setVideoProps({ ...videoProps, url: '' }) // Reset the video URL state
+          closeVideo() // Close the video modal or UI component
+        }
         break;
 
       case 'social':
-        // Placeholder for handling social media embeds
+        // Add a link to the page with the URL as both the text and link
+        if (socialLinkProps.url) {
+          editor?.commands.insertContent({
+            type: 'paragraph', // Paragraph tag
+            content: [
+              {
+                type: 'text', // Insert text node first
+                text: `${socialLinkProps.platform} Link: ${socialLinkProps.url}`, 
+              },
+            ],
+          });
+
+          // Reset the social link properties after inserting
+          setSocialLinkProps({ ...socialLinkProps, url: '' });
+          closeSocial() // Close the modal 
+        }
         break;
 
       default:
@@ -121,7 +141,6 @@ export default function Editor() {
         console.error('Invalid embed type provided');
     }
   };
-
 
   return (
     <div className='w-full max-w-[50rem] mx-auto'>
@@ -158,6 +177,8 @@ export default function Editor() {
                   socialOpened={socialOpened}
                   pictureOpened={pictureOpened}
                   setVideoProps={setVideoProps}
+                  socialLinkProps={socialLinkProps}
+                  setSocialLinkProps={setSocialLinkProps}
                 />
               </FloatingMenu>
             </div>
