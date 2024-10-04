@@ -103,7 +103,6 @@ export default function Editor() {
               },
             });
           });
-
           closePicture() // Close the image modal or UI component
         }
         break;
@@ -135,7 +134,7 @@ export default function Editor() {
                 text: `${socialLinkProps.platform} Link: ${socialLinkProps.url}`, 
               },
             ],
-          });
+          })
 
           // Reset the social link properties after inserting
           setSocialLinkProps({ ...socialLinkProps, url: '' });
@@ -184,7 +183,7 @@ export default function Editor() {
         </div>
 
         <RichTextEditor className='border-none flex-grow flex flex-col bg-transparent' editor={editor}>
-          {focus && <EditorToolbar />}
+          {focus && <EditorToolbar editor={editor} />}
 
           {editor && (
             <div key='floating-menu'>
